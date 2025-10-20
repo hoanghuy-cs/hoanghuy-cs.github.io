@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy 20/10</title>
+
+  <!-- Font + Typed.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url('https://github.com/hoanghuy-cs/TempFiles/blob/main/FriendsBackgroundCropped.jpg?raw=true');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+
+    .container {
+      z-index: 1;
+      max-width: 90%;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      animation: fadeIn 1.5s ease;
+    }
+
+    .typed-text {
+      font-size: 1.3rem;
+      font-weight: 400;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 1.5s;
+      display: inline-block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    canvas#confetti {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #music-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      font-size: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 3;
+      transition: 0.3s;
+    }
+
+    #music-btn:hover { background: rgba(255,255,255,0.4); }
+    
+    @keyframes moveBackground {
+      0% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+      100% { background-position: 0% center; }
+    }
+
+    /* Chỉ áp dụng hiệu ứng khi trên mobile (màn hình nhỏ hơn 768px) */
+    @media (max-width: 768px) {
+      body {
+        animation: moveBackground 20s ease-in-out infinite;
+        background-size: 200% auto; /* Cho phép di chuyển được */
+      }
+    }
+    
+    .typed-cursor {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 2px;
+      color: white; /* hoặc màu bạn muốn */
+      font-weight: 400;
+      animation: blink 0.7s infinite;
+    }
+
+  </style>
+</head>
+
+<body>
+  <canvas id="confetti"></canvas>
+  <button id="music-btn" title="Bật/Tắt nhạc">🕨</button>
+
+  <div class="container">
+    <h1>Happy Vietnamese Women's Day 20/10</h1>
+    <div class="typed-text"></div>
+  </div>
+
+  <!-- Nhạc nền -->
+  <audio id="bg-music" loop>
+    <source src="https://github.com/hoanghuy-cs/TempFiles/raw/refs/heads/main/LoveRomanticHopefulMusicCompress.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    // Confetti khi load
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 25, spread: 360, ticks: 60, zIndex: 2 };
+    const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) return clearInterval(interval);
+      const particleCount = 50 * (timeLeft / duration);
+      confetti({
+        particleCount,
+        angle: randomInRange(55, 125),
+        spread: randomInRange(50, 70),
+        origin: { y: 0.6 }
+      });
+    }, 250);
+
+    // Delay trước khi khởi động hiệu ứng gõ chữ
+    setTimeout(() => {
+      new Typed(".typed-text", {
+        strings: [
+          "Bé Quyên",
+          "Hồng Quyên",
+          "Phạm Linh",
+          "Hà Giang",
+          "Vân Anh",
+          "Thắm Nguyễn",
+          "Chúc các bạn nữ 20/10 thật vui vẻ!",
+          "Luôn xinh đẹp, rạng rỡ và thành công nhé!",
+          "From: Nguyễn Hoàng Huy - PM TVPL"
+        ],
+        typeSpeed: 80,
+        backSpeed: 30,
+        backDelay: 1000,
+        loop: true,
+        smartBackspace: true
+      });
+    }, 4000); // ⏳ delay 4 giây
+
+    // Điều khiển nhạc
+    const music = document.getElementById("bg-music");
+    const btn = document.getElementById("music-btn");
+
+    btn.addEventListener("click", () => {
+      if (music.paused) {
+        music.play();
+        btn.textContent = "🕪";
+      } else {
+        music.pause();
+        btn.textContent = "🕨";
+      }
+    });
+  </script>
+</body>
+</html>
